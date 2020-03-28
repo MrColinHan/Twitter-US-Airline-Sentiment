@@ -10,4 +10,4 @@
      adited location counts.csv
      Power BI.pbix
 #### Export the visualization as images
-     US map.png, US_Alaska.png, US_Hawaii.png
+     US map.png, US_Alaska.png, US_Hawaii.png, world_map.png
