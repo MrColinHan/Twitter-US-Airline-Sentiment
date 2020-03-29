@@ -18,7 +18,8 @@
     negative texts.csv, positive texts.csv
  #### Tool: 
     wordclouds.com
- #### Output Images:
+ #### Output Images and word weights:
     negative_wordCloud.png, positive_wordCloud.png
+    negative_word_weights.csv, positive_word_weights.csv
 
 ### 3. Time Analysis: 
