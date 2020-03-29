@@ -33,7 +33,7 @@ def main():
     print(address_count_dict)
 
     output_list = [list(address_count_dict.keys()), list(address_count_dict.values())]
-    write_csv(output_list, "location counts.csv")
+    write_csv(output_list, "GeoSpatial Analysis/location counts.csv")
 
     '''
     Next step: 
