@@ -14,6 +14,11 @@
     US map.png, US_Alaska.png, US_Hawaii.png, world_map.png
 
 ### 2. Sentiment Word Cloud Analysis: 
-
+ #### Input files:
+    negative texts.csv, positive texts.csv
+ #### Tool: 
+    wordclouds.com
+ #### Output Images:
+    negative_wordCloud.png, positive_wordCloud.png
 
 ### 3. Time Analysis: 
