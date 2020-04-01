@@ -17,9 +17,12 @@
  #### Input files:
     negative texts.csv, positive texts.csv
  #### Tool: 
-    wordclouds.com
+    wordart.com
  #### Output Images and word weights:
     negative_wordCloud.png, positive_wordCloud.png
-    negative_word_weights.csv, positive_word_weights.csv
+    (weight)negative texts.csv, (weight)positive texts.csv
+ #### Use NLTK to add tags and build new wordcloud for adj&verb:
+    (weight&tag)negative texts.csv, (weight&tag)positive texts.csv
+    (verb&adj)negative_wordCloud.png, (verb&adj)positive_wordCloud.png
 
 ### 3. Time Analysis: 
