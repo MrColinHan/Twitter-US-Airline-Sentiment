@@ -1,7 +1,20 @@
 # Web Mining Project
 ## Topic: Twitter-US-Airline-Sentiment
 
-### 1. GeoSpatial Analysis: 
+### 1. Naive Bayes Classifier: 
+ #### Procesure:
+    a. tokenize tweet text
+    b. normalize text
+    c. remove noise
+    d. calculate word density
+    e. prepare data for training the classifier
+    f. build&test model
+    g. calculate accuracy
+    h. collect new data: extract airline-related tweets from raw tweets
+        (parse_new_tweets.py)
+    i. deploy the trained model on new data
+
+### 2. GeoSpatial Analysis: 
  #### Input file: 
     input_Tweets.csv
  #### Count location frequency and its output:
@@ -13,7 +26,7 @@
  #### Export the visualization as images
     US map.png, US_Alaska.png, US_Hawaii.png, world_map.png
 
-### 2. Sentiment Word Cloud Analysis: 
+### 3. Sentiment Word Cloud Analysis: 
  #### Input files:
     negative texts.csv, positive texts.csv
  #### Tool: 
@@ -25,4 +38,3 @@
     (weight&tag)negative texts.csv, (weight&tag)positive texts.csv
     (verb&adj)negative_wordCloud.png, (verb&adj)positive_wordCloud.png
 
-### 3. Time Analysis: 
