@@ -17,7 +17,7 @@ def write_csv(x, y):  # write list x into file y
 
 def main():
     input_list = []
-    read_csv("input_Tweets.csv", input_list)
+    read_csv("Kaggle_Tweets.csv", input_list)
 
     address_column_header = 'tweet_location'
     header_index = input_list[0].index(address_column_header)  # input_list[0] is the 1st row
