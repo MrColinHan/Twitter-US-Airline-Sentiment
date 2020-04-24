@@ -7,11 +7,14 @@ from re import compile
 import pandas as pd
 import csv
 '''
+    This program extracts airline-related tweets out of a raw tweet dataset. 
+    
     Raw tweet data frame columns: 
         | Null | tweet_id | name | tweet_created | text | tweet_location | tweet_coord | ...(more Unnamed)...
         
     Desired output data frame columns: 
         | tweet_id | airline | name| text | tweet_coord | tweet_created | tweet_location | 
+        
 '''
 # =============================================================================
 input_file_dir = r"/Users/Han/Downloads/web project data/tweet_1.csv"
