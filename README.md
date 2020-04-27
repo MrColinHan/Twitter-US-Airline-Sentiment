@@ -3,6 +3,7 @@
 
 ### 1. Naive Bayes Classifier: 
  #### Procesure:
+    (naive_bayes_classifier.py)
     a. tokenize tweet text
     b. normalize text
     c. remove noise
@@ -13,6 +14,11 @@
     h. collect new data: extract airline-related tweets from raw tweets
         (parse_new_tweets.py)
     i. deploy the trained model on new data
+    
+    Files: 
+        negative_tweets.csv: for model training
+        positive_tweets.csv: for model training
+        parsed_tweet_0.csv: new data for predicting
 
 ### 2. GeoSpatial Analysis: 
  #### Input file: 
