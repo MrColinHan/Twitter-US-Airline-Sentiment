@@ -17,8 +17,8 @@ import csv
         
 '''
 # =============================================================================
-input_file_dir = r"/Users/Han/Downloads/web project data/tweet_1.csv"
-output_file_dir = r"/Users/Han/Downloads/web project data/parsed_tweet_1.csv"
+input_file_dir = r"/Users/Han/Downloads/web project data/tweet_0.csv"
+output_file_dir = r"/Users/Han/Downloads/web project data/parsed_tweet_0.csv"
 
 chunk_size = 500000  # for each data frame
 # =============================================================================
