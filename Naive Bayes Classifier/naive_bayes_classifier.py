@@ -24,7 +24,11 @@ from nltk import NaiveBayesClassifier
 # =============================================================================
 positive_input_file_dir = r"/Users/Han/Downloads/web project data/positive_tweets.csv"
 negative_input_file_dir = r"/Users/Han/Downloads/web project data/negative_tweets.csv"
-text_column_index = 10  # col i starts from 0
+train_text_column_index = 10  # col index starts from 0
+
+# file that will be used for prediction
+predict_input_file_dir = r"/Users/Han/Downloads/web project data/parsed_tweet_0.csv"
+predict_text_column_index = 3
 
 output_file_dir = r"/Users/Han/Downloads/web project data/out.csv"
 
@@ -34,6 +38,11 @@ cleaned_positive_tokens = []
 negative_tokens = []
 cleaned_negative_tokens = []
 
+predict_tokens = []
+cleaned_predict_tokens = []
+
+output_list = []
+
 
 def read_csv(filedir, listname):
     file = open(filedir)
@@ -42,7 +51,19 @@ def read_csv(filedir, listname):
         listname.append(row)
 
 
-def clean_up_tweets(file_dir, token_list, cleaned_token_list):
+def write_csv(x, y):
+    with open(y,'w+') as file:
+        wr = csv.writer(file, dialect='excel')
+        wr.writerows(x)
+    file.close()
+
+
+# file_dir is the input csv file directory
+# txt_col_i is the column index of tweet texts
+# token_list is an empty list that will be used to save tokens
+# cleaned_token_list is another empty list what will be used to save cleaned tokens
+
+def clean_up_tweets(file_dir, txt_col_i, token_list, cleaned_token_list):
     input_list = []
     tweets_list = []
     tweets_list_tokenized = []
@@ -52,7 +73,7 @@ def clean_up_tweets(file_dir, token_list, cleaned_token_list):
     # read tweet texts:
     read_csv(file_dir, input_list)
     for row in input_list[1:]:  # exclude header row
-        tweets_list.append(row[text_column_index])
+        tweets_list.append(row[txt_col_i])
 
     # tokenize texts:
     t_tkn = TweetTokenizer()
@@ -102,6 +123,9 @@ def main():
     global cleaned_positive_tokens
     global negative_tokens
     global cleaned_negative_tokens
+    global predict_tokens
+    global cleaned_predict_tokens
+    global output_list
 
     # get cleaned up tokens
     print("......Cleaning up Dataset......")
@@ -109,9 +133,9 @@ def main():
     print("...normalizing...")
     print("...Lemmatizing...")
     print("...removing stop words...\n")
-    clean_up_tweets(positive_input_file_dir, positive_tokens, cleaned_positive_tokens)
+    clean_up_tweets(positive_input_file_dir, train_text_column_index, positive_tokens, cleaned_positive_tokens)
     print("Done: clean up positive tweets")
-    clean_up_tweets(negative_input_file_dir, negative_tokens, cleaned_negative_tokens)
+    clean_up_tweets(negative_input_file_dir, train_text_column_index, negative_tokens, cleaned_negative_tokens)
     print("Done: clean up negative tweets\n")
 
     #print(positive_tokens[4])
@@ -151,6 +175,22 @@ def main():
     print(f"Accuracy is:{classify.accuracy(classifier, test_data)}\n")
 
     print(classifier.show_most_informative_features(10))
+
+    # =======================================now predict new tweets=======================================
+    print("......Now Cleaning up new Dataset......")
+    print("...tokenizing...")
+    print("...normalizing...")
+    print("...Lemmatizing...")
+    print("...removing stop words...\n")
+    clean_up_tweets(predict_input_file_dir, predict_text_column_index, predict_tokens, cleaned_predict_tokens)
+    print("Done: clean up predict tweets\n")
+
+    print("...Now Deploy Bayes Classifier...")
+    for current_tweet_tokens in cleaned_predict_tokens:
+        output_list.append([classifier.classify(dict([token, True] for token in current_tweet_tokens))])
+
+    write_csv(output_list, output_file_dir)
+    print("Done! ")
 
 
 main()
