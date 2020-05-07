@@ -13,6 +13,12 @@ import re
 import string
 from nltk import classify
 from nltk import NaiveBayesClassifier
+from sklearn.metrics import f1_score
+import collections
+import pandas
+import matplotlib.pyplot as plt
+import numpy as np
+import itertools
 
 '''
     This program performs two tasks: 
@@ -20,7 +26,7 @@ from nltk import NaiveBayesClassifier
         2. Train ans Testing the model
     
 '''
-
+temp_matrix = None
 # =============================================================================
 positive_input_file_dir = r"/Users/Han/Downloads/web project data/positive_tweets.csv"
 negative_input_file_dir = r"/Users/Han/Downloads/web project data/negative_tweets.csv"
@@ -127,6 +133,8 @@ def main():
     global cleaned_predict_tokens
     global output_list
 
+    global temp_matrix
+
     # get cleaned up tokens
     print("......Cleaning up Dataset......")
     print("...tokenizing...")
@@ -158,8 +166,8 @@ def main():
     # random shuffle
     random.shuffle(dataset)
 
-    print(f"negative dataset: {len(positive_dataset)} tweets.")
-    print(f"positive dataset: {len(negative_dataset)} tweets.")
+    print(f"positive dataset: {len(positive_dataset)} tweets.")
+    print(f"negative dataset: {len(negative_dataset)} tweets.")
     print(f"combine positive & negative dataset: {len(dataset)} tweets.\n")
     print("......Training Data......")
 
@@ -171,10 +179,65 @@ def main():
 
     print("Build & Test Naive_Bayes_Classifier Model: ")
     classifier = NaiveBayesClassifier.train(train_data)
-
+    print("=============Accuracy====================")
     print(f"Accuracy is:{classify.accuracy(classifier, test_data)}\n")
 
     print(classifier.show_most_informative_features(10))
+
+    # build confusion matrix
+    refsets = collections.defaultdict(set)
+    testsets = collections.defaultdict(set)
+    labels = []
+    tests = []
+
+    for i, (feats, label) in enumerate(test_data):
+        refsets[label].add(i)
+        observed = classifier.classify(feats)
+        testsets[observed].add(i)
+        labels.append(label)
+        tests.append(observed)
+    print("=============Precision and Recall====================")
+    print(f"Positive precision: {nltk.precision(refsets['Positive'], testsets['Positive'])}")
+    print(f"Positive recall: {nltk.recall(refsets['Positive'], testsets['Positive'])}")
+    print(f"Positive F-measure: {nltk.f_measure(refsets['Positive'], testsets['Positive'])}")
+    print(f"Negative precision: {nltk.precision(refsets['Negative'], testsets['Negative'])}")
+    print(f"Negative recall: {nltk.recall(refsets['Negative'], testsets['Negative'])}")
+    print(f"Negative F-measure: {nltk.f_measure(refsets['Negative'], testsets['Negative'])}")
+
+    print("=============Confusion Matrix====================")
+    confusion_matrix_result = nltk.ConfusionMatrix(labels, tests)
+    print(confusion_matrix_result)
+
+    # now visualize the confusion matrix using matplotlib.pyplot
+    #=============Visualize Confusion Matrix====================
+    # matirx needs to be saved as np.array()
+    # also, needs to extract ._confusion first
+    confusion_matrix_result = np.array(confusion_matrix_result._confusion)
+    temp_matrix = confusion_matrix_result
+
+    classes = ["Negatives", "Positives"]
+    plt.figure()
+    plt.imshow(confusion_matrix_result, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes)
+    plt.yticks(tick_marks, classes)
+
+    text_format = 'd'
+    thresh = confusion_matrix_result.max()/2
+    for row, column in itertools.product(range(confusion_matrix_result.shape[0]),
+                                         range(confusion_matrix_result.shape[1])):
+        plt.text(column, row, format(confusion_matrix_result[row, column], text_format),
+                 horizontalalignment='center',
+                 color='white' if confusion_matrix_result[row, column] > thresh else "black")
+
+    plt.ylabel("True Values")
+    plt.xlabel("Predicted Values")
+    plt.tight_layout()
+    # needs a high resolution image
+    plt.savefig("/Users/Han/Downloads/web project data/confusion_matrix.png", dpi=1200)
+    plt.show()
 
     # =======================================now predict new tweets=======================================
     print("......Now Cleaning up new Dataset......")
@@ -185,7 +248,7 @@ def main():
     clean_up_tweets(predict_input_file_dir, predict_text_column_index, predict_tokens, cleaned_predict_tokens)
     print("Done: clean up predict tweets\n")
 
-    print("...Now Deploy Bayes Classifier...")
+    print("...Now Deploy Bayes Classifier on new dataset...")
     for current_tweet_tokens in cleaned_predict_tokens:
         output_list.append([classifier.classify(dict([token, True] for token in current_tweet_tokens))])
 
