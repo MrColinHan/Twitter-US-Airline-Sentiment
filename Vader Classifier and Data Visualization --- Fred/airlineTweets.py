@@ -5,7 +5,7 @@ import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 # Read in tweets dataset
-tweets = pd.read_csv("combinedTweets.csv")
+tweets = pd.read_csv("finalInput.csv")
 
 # Use text to predict airline_sentiment_gold (NLTK)
 # Generate word cloud for positive and negative words using text
@@ -23,7 +23,7 @@ print(numberOfTweetsPerAirline)
 print()
 
 # Using Pie chart to plot frequency of tweets per airline
-words = [('United', 3822), ('US Airways', 2913), ('American', 2759), ('Southwest', 2420), ('Delta', 2222), ('Virgin America', 504)]
+words = [('United', 4648), ('US Airways', 2913), ('American', 3450), ('Southwest', 2814), ('Delta', 3052), ('Virgin America', 568)]
 sizes, labels = [i[1] for i in words],[i[0] for i in words]
 plt.title("Frequency of Tweets Per Airline")
 plt.pie(sizes, labels=labels,autopct='%1.1i%%')
@@ -45,7 +45,7 @@ plt.ylabel("Number of Tweets")
 plt.bar(names, numberOfTweetsBySentiment, color =('red', 'blue', 'green'))
 plt.show()
 
-"""
+
 #--------------------------------------------------------------------------------------------
 # Question: What are the top reasons for poor service?
 #--------------------------------------------------------------------------------------------
@@ -60,8 +60,9 @@ plt.xlabel("Negative Reason")
 plt.ylabel("Number of Tweets")
 colors = ("red", "blue", "green", "black", "brown", "yellow", "orange", "purple", "gray", "pink")
 plt.bar(reasons, topTenNegativeReasons, color=colors)
+plt.xticks(fontsize=7)
 plt.show()
-"""
+
 
 """
 #--------------------------------------------------------------------------------------------
@@ -87,7 +88,7 @@ plt.title("Best Airlines by Number of Positive Reasons (airline_sentiment)")
 plt.pie(sizes, labels=labels,autopct='%1.1i%%')
 plt.show()
 
-"""
+
 #--------------------------------------------------------------------------------------------
 # Worst Airlines by Number of Negative Reasons (negativereason)
 # Pie chart with frequencies
@@ -102,12 +103,12 @@ worst_airline = worst_airline.groupby('airline').negativereason.count().sort_val
 print(worst_airline)
 
 # Pie chart for Worst Airlines by Number of Negative Reasons (negativereason)
-words = [('United', 2633), ('US Airways', 2263), ('American', 1960), ('Southwest', 1186), ('Delta', 955), ('Virgin America', 181)]
+words = [('United', 3301), ('US Airways', 2263), ('American', 2518), ('Southwest', 1440), ('Delta', 1588), ('Virgin America', 230)]
 sizes, labels = [i[1] for i in words],[i[0] for i in words]
 plt.title("Worst Airlines by Number of Negative Reasons (negativereason)")
 plt.pie(sizes, labels=labels,autopct='%1.1i%%')
 plt.show()
-"""
+
 
 
 
@@ -120,7 +121,7 @@ plt.xlabel('Airline')
 plt.ylabel('Number of Tweets')
 plt.show()
 
-"""
+
 # Top Ten Reasons for Poor Service By Airline
 reasonsByAirline = pd.crosstab(tweets.airline, tweets.negativereason).apply(lambda x: x/x.sum() * 100, axis=1)
 reasonsByAirline.plot.bar(stacked=True, figsize=(6,6), title='Frequency of Top Ten Negative Reasons By Airline')
@@ -128,14 +129,14 @@ plt.xlabel('Airline')
 plt.ylabel('Top Ten Negative Reasons')
 plt.legend(bbox_to_anchor=(0.95, 0.7))
 plt.show()
-"""
+
 
 ######### Machine Learning part for airline_sentiment_gold #############
 analyser = SentimentIntensityAnalyzer()
 
 # Columns needed for classification 
 # tweets = tweets[['airline_sentiment', 'airline','text' ]]
-tweets = tweets[['tweet_id', 'airline_sentiment', 'airline', 'name', 'text', 'tweet_coord', 'tweet_created', 'tweet_location']]
+tweets = tweets[['tweet_id', 'airline_sentiment', 'airline', 'name', 'text', 'tweet_coord', 'tweet_created', 'tweet_location', 'negativereason']]
 
 # Print number of tweets
 print()
@@ -181,7 +182,7 @@ while(i<len(tweets)):
 # Add new column called airline_sentiment_gold using VADER score with computed values
 tweets['vader_airline_sentiment'] = predicted_value
 #tweets.to_csv("newTweets.csv", index=False)
-outfile = open('combinedTweetsFile.csv', 'w')
+outfile = open('finalOutput.csv', 'w')
 tweets.to_csv(outfile, index=False)
 outfile.close()
 
