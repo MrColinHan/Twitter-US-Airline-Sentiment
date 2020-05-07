@@ -19,6 +19,7 @@
         negative_tweets.csv: for model training
         positive_tweets.csv: for model training
         parsed_tweet_0.csv: new data for predicting
+        parsed_tweet_0_(with_prediction).xlsx: new data with predicted sentiment values(predicted with a 92.1% accuracy model)
 
 ### 2. GeoSpatial Analysis: 
  #### Input file: 
