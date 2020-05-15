@@ -2,7 +2,7 @@
 ## Topic: Twitter-US-Airline-Sentiment
 
 ### 1. Naive Bayes Classifier: 
- #### Procesure:
+ #### Procedure:
     (naive_bayes_classifier.py)
     a. tokenize tweet text
     b. normalize text
