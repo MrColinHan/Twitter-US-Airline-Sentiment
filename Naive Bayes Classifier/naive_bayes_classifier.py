@@ -21,9 +21,11 @@ import numpy as np
 import itertools
 
 '''
-    This program performs two tasks: 
+    This program performs four tasks: 
         1. Tokenize text and text stemming
-        2. Train ans Testing the model
+        2. Train and Testing the Naive Bayes model
+	    3. visualize confusion matrix
+	    4. calculate precision, recall, f-measure
     
 '''
 temp_matrix = None
